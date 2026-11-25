@@ -42,11 +42,25 @@
       <artifactId>neo4j-java-driver</artifactId>
       <version>5.26.0</version>
     </dependency>
+
+    <!-- os drivers usam SLF4J para log interno; o "nop" descarta esses logs e deixa o console só com a demonstração -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-nop</artifactId>
+      <version>1.7.36</version>
+    </dependency>
   </dependencies>
 
   <build>
     <finalName>demonstracao-competencia-pessoas</finalName>
     <plugins>
+      <!-- versão fixada: o plugin padrão de Maven antigos (3.1) ignora o "release" e tenta compilar para Java 5 -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.13.0</version>
+      </plugin>
+
       <!-- gera um JAR com todas as dependências, pra rodar com "java -jar" fora da IDE -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

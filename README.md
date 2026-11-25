@@ -25,7 +25,7 @@ cada um com uma responsabilidade específica:
 ## Estrutura do projeto
 
 ```
-262-demonstracao-competencia/
+demonstracao-competencia/
 ├── README.md
 ├── pom.xml
 ├── docker-compose.yml           → sobe PostgreSQL, Redis, MongoDB e Neo4j
