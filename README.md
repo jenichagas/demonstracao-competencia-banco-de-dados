@@ -79,7 +79,7 @@ docker exec -i pessoas-postgres psql -U pessoas_app -d pessoas < sql/schema.sql
 **Pela linha de comando (Maven):**
 
 ```bash
-mvn exec:java
+mvn compile exec:java
 ```
 
 **Pelo Eclipse:**
