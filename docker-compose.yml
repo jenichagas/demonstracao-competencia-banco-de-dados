@@ -1,0 +1,66 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: pessoas-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: pessoas
+      POSTGRES_USER: pessoas_app
+      POSTGRES_PASSWORD: pessoas_app
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pessoas_app -d pessoas"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7
+    container_name: pessoas-redis
+    restart: unless-stopped
+    ports:
+      - "6380:6379" # host 6380 -> evita conflito com outro Redis que já possa estar rodando na 6379
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  mongo:
+    image: mongo:7
+    container_name: pessoas-mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  neo4j:
+    image: neo4j:5
+    container_name: pessoas-neo4j
+    restart: unless-stopped
+    environment:
+      NEO4J_AUTH: neo4j/pessoas_app
+    ports:
+      - "7474:7474" # console web (http://localhost:7474)
+      - "7687:7687" # bolt (usado pelo driver Java)
+    volumes:
+      - neo4j_data:/data
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://localhost:7474 || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+volumes:
+  postgres_data:
+  mongo_data:
+  neo4j_data:
